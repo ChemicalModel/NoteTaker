@@ -1,2 +1,1 @@
-# NoteTaker
-A PWA for taking notes!
+# Text Editor Starter Code
