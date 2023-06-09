@@ -5,29 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>J.A.T.E</title>
     
-      <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
-      </link>
-      <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js">
-      </script>
-      <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js">
-      </script>
-      <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
-      </link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css" />
   </head>
   <body>
     <nav id="navbar">
       <div class="nav-btn">
         <a class="btn btn-sm btn-dark" id="buttonInstall" role="button">Install!</a>
       </div>
-     <h1> Just Another Text Editor</h1>
-     
-      <div class="navbar-brand" 
-            ><img src="./assets/icons/icon_96x96.png"
-          /></div>
+      <h1>Just Another Text Editor</h1>
+      <div class="navbar-brand">
+        <img src="./assets/icons/icon_96x96.png" />
+      </div>
     </nav>
 
     <main id="main">
@@ -35,6 +26,48 @@
         <div class="loading-spinner"></div>
       </div>
     </main>
-    
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Get the install button element
+        const installButton = document.getElementById('buttonInstall');
+
+        // Check if the browser supports the beforeinstallprompt event
+        if ('onbeforeinstallprompt' in window) {
+          // Prevent the default browser install prompt
+          window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+
+            // Store the event for later use
+            const deferredPrompt = event;
+
+            // Show the install button
+            installButton.style.display = 'block';
+
+            // Handle the install button click event
+            installButton.addEventListener('click', () => {
+              // Show the browser install prompt
+              deferredPrompt.prompt();
+
+              // Wait for the user to respond to the prompt
+              deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                  console.log('User accepted the install prompt');
+                } else {
+                  console.log('User dismissed the install prompt');
+                }
+
+                // Reset the install button display
+                installButton.style.display = 'none';
+              });
+            });
+          });
+        } else {
+          // Browser does not support the beforeinstallprompt event
+          // Hide the install button
+          installButton.style.display = 'none';
+        }
+      });
+    </script>
   </body>
 </html>
